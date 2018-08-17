@@ -7,3 +7,8 @@ The Bash script code may contain unused segments from previouse sources and has 
 How ever this is working on my tablet so its time to share with everyone :)
 
 Enjoy and please feel free to modify as needed.
+
+
+THis contains code from these soures:
+
+https://linuxappfinder.com/blog/auto_screen_rotation_in_ubuntu
