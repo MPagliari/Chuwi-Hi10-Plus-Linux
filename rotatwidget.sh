@@ -2,19 +2,8 @@
 # Auto rotate screen based on device orientation
 
 # Receives input from monitor-sensor (part of iio-sensor-proxy package)
-# Screen orientation and launcher location is set based upon accelerometer position
-# Launcher will be on the left in a landscape orientation and on the bottom in a portrait orientation
+# Screen orientation and Touchpanal orientation set based on monitor-sensor
 # This script should be added to startup applications for the user
-
-TOUCHSCREEN='silead_ts'
-XDISPLAY='DSI-1'
-TRANSFORM='libinput Calibration Matrix'
-
-X_SCALE=2.17
-Y_SCALE=3.22
-X_OFFSET=-0.045
-Y_OFFSET=-0.004
-
 
 # Clear sensor.log so it doesn't get too long over time
 > sensor.log
@@ -30,8 +19,8 @@ while inotifywait -e modify sensor.log; do
 ORIENTATION=$(tail -n 1 sensor.log | grep 'orientation' | grep -oE '[^ ]+$')
 
 # Set the actions to be taken for each possible orientation
-
-#echo "$ORIENTATION" >> dbg.txt
+#This is a bit hacky but it works!
+#Tablet display (monitor-sensor) reports orintation bottom-up when displayed in normal landscape please be aware of this.
 
 case "$ORIENTATION" in
 normal)
@@ -44,6 +33,4 @@ left-up)
 xrandr --output DSI-1 --rotate left &&      xinput --set-prop "Silead GSLx680 Touchscreen" --type=float "Coordinate Transformation Matrix" 0 -1 1 1 0 0 0 0 1;;
 esac
 
-#xinput set-prop 'silead_ts' --type=float "$TRANSFORM" 0 $Y_SCALE $Y_OFFSET $X_SCALE 0 $X_OFFSET 0 0 1
-#xinput --map-to-output "$TOUCHSCREEN" "$XDISPLAY"
 done
